@@ -7,10 +7,10 @@
 #include "Inventory/InventoryComponent.h"
 #include "InventoryProjectCpp/InventoryProjectCppCharacter.h"
 
-// Sets default values
+// 设置默认值
 AItemActor::AItemActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// 设置此Actor每帧调用Tick()。如果不需要，可以关闭此功能以提高性能。
 	PrimaryActorTick.bCanEverTick = false;
 
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
@@ -23,7 +23,7 @@ AItemActor::AItemActor()
 	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AItemActor::OnOverlapBegin);
 }
 
-// Called when the game starts or when spawned
+// 当游戏开始或生成时调用
 void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();

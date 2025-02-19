@@ -21,19 +21,19 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AInventoryProjectCppCharacter::AInventoryProjectCppCharacter()
 {
-	// Character doesnt have a rifle at start
+	//角色开始时没有步枪
 	bHasRifle = false;
 	
-	// Set size for collision capsule
+	//设置碰撞舱的尺寸
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 		
-	// Create a CameraComponent	
+	//创建CameraComponent
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
-	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
+	//创建一个网格组件，该组件将在“第一人称”视图查看（控制角色时）
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
 	Mesh1P->SetOnlyOwnerSee(true);
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
@@ -49,7 +49,7 @@ AInventoryProjectCppCharacter::AInventoryProjectCppCharacter()
 
 void AInventoryProjectCppCharacter::BeginPlay()
 {
-	// Call the base class  
+	//调用基类
 	Super::BeginPlay();
 
 	// Create inventory widget
@@ -66,7 +66,7 @@ void AInventoryProjectCppCharacter::BeginPlay()
 	// 	}
 	// }
 
-	// Add Input Mapping Context
+	//添加输入映射上下文
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -81,7 +81,7 @@ void AInventoryProjectCppCharacter::BeginPlay()
 
 void AInventoryProjectCppCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	// Set up action bindings
+	//设置操作绑定
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		// Jumping
@@ -106,12 +106,12 @@ void AInventoryProjectCppCharacter::SetupPlayerInputComponent(UInputComponent* P
 
 void AInventoryProjectCppCharacter::Move(const FInputActionValue& Value)
 {
-	// input is a Vector2D
+	//输入是Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
-		// add movement 
+		//添加移动
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 		AddMovementInput(GetActorRightVector(), MovementVector.X);
 	}
@@ -119,12 +119,12 @@ void AInventoryProjectCppCharacter::Move(const FInputActionValue& Value)
 
 void AInventoryProjectCppCharacter::Look(const FInputActionValue& Value)
 {
-	// input is a Vector2D
+	//输入是Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
-		// add yaw and pitch input to controller
+		//向控制器添加偏航和俯仰输入
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
@@ -132,7 +132,7 @@ void AInventoryProjectCppCharacter::Look(const FInputActionValue& Value)
 
 void AInventoryProjectCppCharacter::ToggleInventory()
 {
-	// Toggle Inventory Widget
+	//切换库存部件
 	APlayerController* playerController = Cast<APlayerController>(this->GetController());
 	if (InventoryWidget != nullptr)
 	{

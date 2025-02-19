@@ -1,5 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -18,35 +19,35 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-UCLASS(config=Game)
+UCLASS(config = Game)
 class AInventoryProjectCppCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	/** Pawn mesh: 1st person view (arms; seen only by self) */
-	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
+	/** 角色网格体：第一人称视角（手臂；仅自己可见） */
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	USkeletalMeshComponent* Mesh1P;
 
-	/** First person camera */
+	/** 第一人称相机 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
 
-	/** MappingContext */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	/** 输入映射上下文 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
 
-	/** Jump Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	/** 跳跃输入动作 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* JumpAction;
 
-	/** Move Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	/** 移动输入动作 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
 
-	/** Inventory Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	/** 库存输入动作 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* InventoryAction;
-	
+
 public:
 	AInventoryProjectCppCharacter();
 
@@ -54,60 +55,59 @@ protected:
 	virtual void BeginPlay();
 
 public:
-		
-	/** Look Input Action */
+
+	/** 视角输入动作 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
-	/** Bool for AnimBP to switch to another animation set */
+	/** 用于AnimBP切换到另一组动画的布尔值 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon)
 	bool bHasRifle;
 
-	/** Setter to set the bool */
+	/** Setter的布尔值 */
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	void SetHasRifle(bool bNewHasRifle);
 
-	/** Getter for the bool */
+	/** Getter的布尔值 */
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	bool GetHasRifle();
 
-	/** Getter and Setter for the InventoryComponent */
+	/** InventoryComponent的Getter和Setter */
 	UFUNCTION(BlueprintCallable)
 	UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
-	
+
 	UFUNCTION(BlueprintCallable)
 	void SetInventoryComponent(UInventoryComponent* NewInventoryComponent) { InventoryComponent = NewInventoryComponent; }
 
 protected:
-	/** Called for movement input */
+	/** 用于移动输入 */
 	void Move(const FInputActionValue& Value);
 
-	/** Called for looking input */
+	/** 用于视角输入 */
 	void Look(const FInputActionValue& Value);
 
 protected:
 	void ToggleInventory();
-	
+
 	UPROPERTY(BlueprintReadWrite)
 	UInventory* InventoryWidget;
-	
+
 	UPROPERTY(BlueprintReadOnly)
 	UInventoryComponent* InventoryComponent;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float TileSize = 50.f;
-	
-	// APawn interface
+
+	// APawn接口
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
-	// End of APawn interface
+	// APawn接口结束
 
 public:
-	/** Returns Mesh1P subobject **/
+	/** 返回Mesh1P子对象 **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
-	/** Returns FirstPersonCameraComponent subobject **/
+	/** 返回FirstPersonCameraComponent子对象 **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 private:
 	TSubclassOf<UInventory> InventoryWidgetClass;
 };
-

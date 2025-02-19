@@ -17,11 +17,11 @@ class INVENTORYPROJECTCPP_API AItemActor : public AActor
 public:
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	// Sets default values for this actor's properties
+	// 为此 Actor 的属性设置默认值
 	AItemActor();
 
 protected:
-	// Called when the game starts or when spawned
+	// 当游戏开始或生成时调用
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

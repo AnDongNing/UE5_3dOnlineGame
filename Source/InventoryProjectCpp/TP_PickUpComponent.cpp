@@ -1,10 +1,11 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
+
 #include "TP_PickUpComponent.h"
 
 UTP_PickUpComponent::UTP_PickUpComponent()
 {
-	// Setup the Sphere Collision
+	// 设置球体碰撞
 	SphereRadius = 32.f;
 }
 
@@ -12,20 +13,20 @@ void UTP_PickUpComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Register our Overlap Event
+	// 注册我们的重叠事件
 	OnComponentBeginOverlap.AddDynamic(this, &UTP_PickUpComponent::OnSphereBeginOverlap);
 }
 
 void UTP_PickUpComponent::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// Checking if it is a First Person Character overlapping
+	// 检查是否是第一人称角色重叠
 	AInventoryProjectCppCharacter* Character = Cast<AInventoryProjectCppCharacter>(OtherActor);
-	if(Character != nullptr)
+	if (Character != nullptr)
 	{
-		// Notify that the actor is being picked up
+		// 通知该角色正在被拾取
 		OnPickUp.Broadcast(Character);
 
-		// Unregister from the Overlap Event so it is no longer triggered
+		// 从重叠事件中注销，以便不再触发
 		OnComponentBeginOverlap.RemoveAll(this);
 	}
 }

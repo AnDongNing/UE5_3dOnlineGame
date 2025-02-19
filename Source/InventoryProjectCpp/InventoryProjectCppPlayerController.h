@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc.All Rights Reserved.
 
 #pragma once
 
@@ -15,17 +15,17 @@ UCLASS()
 class INVENTORYPROJECTCPP_API AInventoryProjectCppPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
 protected:
 
-	/** Input Mapping Context to be used for player input */
+	/** 用于玩家输入的输入映射上下文 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* InputMappingContext;
 
-	// Begin Actor interface
+	// 开始 Actor 接口
 protected:
 
 	virtual void BeginPlay() override;
 
-	// End Actor interface
+	// 结束 Actor 接口
 };

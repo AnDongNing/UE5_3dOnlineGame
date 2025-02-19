@@ -10,10 +10,10 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
-// Sets default values for this component's properties
+// 为此组件的属性设置默认值
 UTP_WeaponComponent::UTP_WeaponComponent()
 {
-	// Default offset from the character location for projectiles to spawn
+	// 射弹生成时相对于角色位置的默认偏移
 	MuzzleOffset = FVector(100.0f, 0.0f, 10.0f);
 }
 
@@ -25,7 +25,7 @@ void UTP_WeaponComponent::Fire()
 		return;
 	}
 
-	// Try and fire a projectile
+	// 尝试发射一个射弹
 	if (ProjectileClass != nullptr)
 	{
 		UWorld* const World = GetWorld();
@@ -33,28 +33,28 @@ void UTP_WeaponComponent::Fire()
 		{
 			APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
 			const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
-			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+			// MuzzleOffset 在相机空间中，所以在从角色位置偏移以找到最终枪口位置之前，将其转换到世界空间
 			const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(MuzzleOffset);
-	
-			//Set Spawn Collision Handling Override
+
+			// 设置生成碰撞处理覆盖
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-	
-			// Spawn the projectile at the muzzle
+
+			// 在枪口处生成射弹
 			World->SpawnActor<AInventoryProjectCppProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 		}
 	}
-	
-	// Try and play the sound if specified
+
+	// 如果指定了声音尝试播放
 	if (FireSound != nullptr)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, Character->GetActorLocation());
 	}
-	
-	// Try and play a firing animation if specified
+
+	// 如果指定了射击动画尝试播放
 	if (FireAnimation != nullptr)
 	{
-		// Get the animation object for the arms mesh
+		// 获取手臂网格的动画对象
 		UAnimInstance* AnimInstance = Character->GetMesh1P()->GetAnimInstance();
 		if (AnimInstance != nullptr)
 		{
@@ -67,31 +67,31 @@ void UTP_WeaponComponent::AttachWeapon(AInventoryProjectCppCharacter* TargetChar
 {
 	Character = TargetCharacter;
 
-	// Check that the character is valid, and has no rifle yet
+	// 检查角色是否有效，并且还没有步枪
 	if (Character == nullptr || Character->GetHasRifle())
 	{
 		return;
 	}
 
-	// Attach the weapon to the First Person Character
+	// 将武器附加到第一人称角色
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
 	AttachToComponent(Character->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint")));
-	
-	// switch bHasRifle so the animation blueprint can switch to another animation set
+
+	// 切换 bHasRifle 以便动画蓝图可以切换到另一套动画
 	Character->SetHasRifle(true);
 
-	// Set up action bindings
+	// 设置动作绑定
 	if (APlayerController* PlayerController = Cast<APlayerController>(Character->GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			// Set the priority of the mapping to 1, so that it overrides the Jump action with the Fire action when using touch input
+			// 将映射的优先级设置为1，这样在使用触摸输入时，它会用射击动作覆盖跳跃动作
 			Subsystem->AddMappingContext(FireMappingContext, 1);
 		}
 
 		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent))
 		{
-			// Fire
+			// 射击
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::Fire);
 		}
 	}

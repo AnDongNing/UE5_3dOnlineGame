@@ -8,53 +8,53 @@
 
 class AInventoryProjectCppCharacter;
 
-UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class INVENTORYPROJECTCPP_API UTP_WeaponComponent : public USkeletalMeshComponent
 {
 	GENERATED_BODY()
 
 public:
-	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly, Category=Projectile)
+	/** 要生成的射弹类 */
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 	TSubclassOf<class AInventoryProjectCppProjectile> ProjectileClass;
 
-	/** Sound to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
+	/** 每次开火时播放的声音 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	USoundBase* FireSound;
-	
-	/** AnimMontage to play each time we fire */
+
+	/** 每次开火时播放的动画蒙太奇 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	UAnimMontage* FireAnimation;
 
-	/** Gun muzzle's offset from the characters location */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
+	/** 枪口相对于角色位置的偏移 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	FVector MuzzleOffset;
 
-	/** MappingContext */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	/** 映射上下文 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputMappingContext* FireMappingContext;
 
-	/** Fire Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	/** 射击输入动作 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* FireAction;
 
-	/** Sets default values for this component's properties */
+	/** 设置此组件属性的默认值 */
 	UTP_WeaponComponent();
 
-	/** Attaches the actor to a FirstPersonCharacter */
-	UFUNCTION(BlueprintCallable, Category="Weapon")
+	/** 将武器附加到第一人称角色 */
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void AttachWeapon(AInventoryProjectCppCharacter* TargetCharacter);
 
-	/** Make the weapon Fire a Projectile */
-	UFUNCTION(BlueprintCallable, Category="Weapon")
+	/** 发射一个射弹 */
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
 
 protected:
-	/** Ends gameplay for this component. */
+	/** 结束此组件的游戏玩法 */
 	UFUNCTION()
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 private:
-	/** The Character holding this weapon*/
+	/** 持有此武器的角色 */
 	AInventoryProjectCppCharacter* Character;
 };

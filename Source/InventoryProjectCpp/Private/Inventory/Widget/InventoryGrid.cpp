@@ -110,13 +110,13 @@ void UInventoryGrid::RefreshGrid()
 	TMap<UItemObject*, FVector2D> Items = InventoryComponent->GetAllItems();
 	for (auto Item : Items)
 	{
-		// Create item widget using the Bp version of ItemWidget
+		// 使用 ItemWidget 的 Bp 版本创建物品小部件
 		/*
-		If you use BindWidget, you have to create respective components in the blueprint version of the widget derived from your widget class.
-		Then, when you want to create widget, you need to use the blueprint class you’ve created, not the c++ class.
-		BindWidget will search for component of a certain class with a certain name, but it does not create such components for you.
-		If you don’t want to use blueprints, you don’t really need BindWidget, you can create the components directly in your c++ class.
-		 */
+		如果使用 BindWidget，您必须在从您的小部件类派生的小部件的蓝图版本中创建相应的组件。
+		然后，当想要创建小部件时，需要使用创建的蓝图类，而不是 c++ 类。
+		BindWidget 会搜索具有特定名称的特定类的组件，但它不会创建这些组件。
+		如果您不想使用蓝图，实际上不需要使用 BindWidget，可以直接在c++类中创建这些组件。
+		*/
 		UItem* ItemWidget = CreateItemWidget();
 		ItemWidget->InitializeItem(Item.Key, TileSize);
 		ItemWidget->OnRemoved.AddDynamic(this, &UInventoryGrid::OnItemRemoved);
@@ -133,12 +133,12 @@ void UInventoryGrid::CreateLineSegments()
 	const int Rows = InventoryComponent->GetRows();
 	for (int i = 0; i <= Columns; i++)
 	{
-		// Calculate start and end points for vertical lines
+		// 计算垂直线的起点和终点
 		Lines.Add(FLine(FVector2D(i * TileSize, 0), FVector2D(i * TileSize, Rows * TileSize)));
 	}
 	for (int i = 0; i <= Rows; i++)
 	{
-		// Calculate start and end points for horizontal lines
+		// 计算水平线的起点和终点
 		Lines.Add(FLine(FVector2D(0, i * TileSize), FVector2D(Columns * TileSize, i * TileSize)));
 	}
 }
